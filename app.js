@@ -14,18 +14,8 @@ const connection = new Client({
 });
 connection.connect();
 
-// SQL
-const create_userTable = {
-  text:
-    "CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(255), display_name VARCHAR(255), timestamp VARCHAR(255), cuttime SMALLINT, shampootime SMALLINT, colortime SMALLINT, spatime SMALLINT);",
-};
-
-connection
-  .query(create_userTable)
-  .then(() => {
-    console.log("table USERS created");
-  })
-  .catch((err) => console.log(err));
+// CONFIG
+const INITIAL_TREAT = [20, 10, 40, 15, 30, 15, 10];
 
 // LINE
 const config = {
@@ -37,6 +27,27 @@ const client = new line.Client(config);
 // 友達追加
 const greeting_follow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
+  // INSERT QUERY
+  const table_insert = {
+    text:
+      "INSERT INTO users (line_uid,display_name,timestamp,cuttime,shampootime,colortime,spatime) VALUES($1,$2,$3,$4,$5,$6,$7);",
+    values: [
+      event.source.userId,
+      displayName,
+      event.timestamp,
+      INITIAL_TREAT[0],
+      INITIAL_TREAT[1],
+      INITIAL_TREAT[2],
+      INITIAL_TREAT[3],
+    ],
+  };
+  connection
+    .query(table_insert)
+    .then(() => {
+      console.log("insert");
+    })
+    .catch((err) => console.log(err));
+
   return client.replyMessage(event.replyToken, {
     type: "text",
     text: displayName + "さん、フォローありがとうございます\uDBC0\uDC04",
