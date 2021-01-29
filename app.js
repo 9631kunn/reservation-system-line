@@ -11,6 +11,7 @@ const config = {
 
 const client = new line.Client(config);
 
+// 友達追加
 const greeting_follow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   return client.replyMessage(event.replyToken, {
@@ -19,10 +20,19 @@ const greeting_follow = async (event) => {
   });
 };
 
+// メッセージ送信時
+const handleMessage = async (event) => {
+  const { displayName } = await client.getProfile(event.source.userId);
+  const text = event.message.type === "text" ? event.message.text : "";
+  return client.replyMessage(event.replyToken, {
+    type: "text",
+    text: displayName + "「" + text + "」",
+  });
+};
+
 const lineBot = (req, res) => {
   res.status(200).end();
   const events = req.body.events;
-  console.log(events);
   const promises = [];
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
@@ -30,6 +40,9 @@ const lineBot = (req, res) => {
     switch (event.type) {
       case "follow":
         promises.push(greeting_follow(event));
+        break;
+      case "message":
+        promises.push(handleMessage(event));
         break;
     }
   }
