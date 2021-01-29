@@ -2,13 +2,36 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const line = require("@line/bot-sdk");
+const { Client } = require("pg");
 const PORT = process.env.PORT || 3000;
 
+// DB
+const connection = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+connection.connect();
+
+// SQL
+const create_userTable = {
+  text:
+    "CREATE TABLE IF NOT EXISTS users (id SERIAL NOT NULL, line_uid VARCHAR(255), display_name VARCHAR(255), timestamp VARCHAR(255), cuttime SMALLINT, shampootime SMALLINT, colortime SMALLINT, spatime SMALLINT);",
+};
+
+connection
+  .query(create_userTable)
+  .then(() => {
+    console.log("table USERS created");
+  })
+  .catch((err) => console.log(err));
+
+// LINE
 const config = {
   channelAccessToken: process.env.ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
-
 const client = new line.Client(config);
 
 // 友達追加
