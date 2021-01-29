@@ -11,9 +11,9 @@ const config = {
 
 const client = new line.Client(config);
 
-const greeting_follow = async (ev) => {
-  const { displayName } = await client.getProfile(ev.source.userId);
-  return client.replyMessage(ev.replyToken, {
+const greeting_follow = async (event) => {
+  const { displayName } = await client.getProfile(event.source.userId);
+  return client.replyMessage(event.replyToken, {
     type: "text",
     text: displayName + "さん、フォローありがとうございます\uDBC0\uDC04",
   });
@@ -22,12 +22,14 @@ const greeting_follow = async (ev) => {
 const lineBot = (req, res) => {
   res.status(200).end();
   const events = req.body.events;
+  console.log(events);
   const promises = [];
   for (let i = 0; i < events.length; i++) {
-    const ev = events[i];
-    switch (ev.type) {
+    const event = events[i];
+    console.log(event);
+    switch (event.type) {
       case "follow":
-        promises.push(greeting_follow(ev));
+        promises.push(greeting_follow(event));
         break;
     }
   }
