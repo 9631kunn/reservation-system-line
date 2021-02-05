@@ -54,21 +54,229 @@ const greeting_follow = async (event) => {
   });
 };
 
+// メニュー選択
+const orderChoice = (event) => {
+  return client.replyMessage(event.replyToken, {
+    type: "bubble",
+    header: {
+      type: "box",
+      layout: "baseline",
+      contents: [
+        {
+          type: "text",
+          text: "予約メニュー",
+          size: "lg",
+          decoration: "none",
+          style: "normal",
+          position: "relative",
+          align: "center",
+          weight: "bold",
+          color: "#545454",
+        },
+      ],
+      position: "relative",
+      offsetBottom: "none",
+      paddingBottom: "none",
+    },
+    hero: {
+      type: "box",
+      layout: "vertical",
+      contents: [
+        {
+          type: "text",
+          text: "複数選択 可",
+          weight: "regular",
+          align: "center",
+          margin: "xs",
+          size: "sm",
+        },
+      ],
+      paddingAll: "sm",
+      paddingStart: "md",
+      paddingEnd: "md",
+    },
+    body: {
+      type: "box",
+      layout: "vertical",
+      contents: [
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "カット",
+                data: "menu&0",
+              },
+              style: "secondary",
+            },
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "シャンプー",
+                data: "menu&1",
+              },
+              style: "secondary",
+            },
+          ],
+          spacing: "md",
+          paddingBottom: "md",
+        },
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "カラー",
+                data: "menu&2",
+              },
+              style: "secondary",
+            },
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "ヘッドスパ",
+                data: "menu&3",
+              },
+              style: "secondary",
+            },
+          ],
+          spacing: "md",
+          paddingBottom: "md",
+        },
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "カラー",
+                data: "menu&4",
+              },
+              style: "secondary",
+            },
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "ヘッドスパ",
+                data: "menu&5",
+              },
+              style: "secondary",
+            },
+          ],
+          spacing: "md",
+          paddingBottom: "md",
+        },
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "マッサージ",
+                data: "menu&6",
+              },
+              style: "secondary",
+            },
+            {
+              type: "button",
+              action: {
+                type: "postback",
+                label: "顔剃り",
+                data: "menu&7",
+              },
+              style: "secondary",
+            },
+          ],
+          spacing: "md",
+          paddingBottom: "md",
+        },
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "button",
+                  action: {
+                    type: "postback",
+                    label: "眉",
+                    data: "menu&8",
+                  },
+                  style: "secondary",
+                },
+              ],
+              width: "50%",
+              paddingEnd: "sm",
+            },
+          ],
+          spacing: "md",
+          paddingBottom: "md",
+        },
+        {
+          type: "button",
+          action: {
+            type: "postback",
+            label: "決定する",
+            data: "end",
+          },
+          style: "primary",
+          margin: "md",
+        },
+      ],
+    },
+    footer: {
+      type: "box",
+      layout: "vertical",
+      contents: [
+        {
+          type: "text",
+          text: "キャンセル",
+          action: {
+            type: "postback",
+            label: "キャンセル",
+            data: "cancel",
+          },
+          align: "center",
+          margin: "sm",
+          size: "sm",
+        },
+      ],
+    },
+    styles: {
+      header: {
+        separator: true,
+      },
+    },
+  });
+};
+
 // メッセージ送信時
 const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
-  if (text.includes("予約")) {
-    return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: "次回予約を受け付けました。メニューは……",
-    });
-  } else {
-    return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: displayName + "「" + text + "」",
-    });
-  }
+  // 予約の場合メニュー表示
+  if (text.includes("予約")) orderChoice(event);
+  // 王蟲がえし
+  return client.replyMessage(event.replyToken, {
+    type: "text",
+    text: displayName + "「" + text + "」",
+  });
 };
 
 const lineBot = (req, res) => {
