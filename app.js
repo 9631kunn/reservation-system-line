@@ -58,10 +58,17 @@ const greeting_follow = async (event) => {
 const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: displayName + "「" + text + "」",
-  });
+  if (text.includes("予約")) {
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: "次回予約を受け付けました。メニューは……",
+    });
+  } else {
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: displayName + "「" + text + "」",
+    });
+  }
 };
 
 const lineBot = (req, res) => {
