@@ -276,6 +276,7 @@ const handleMessage = async (event) => {
   });
 };
 
+// 希望日時選択
 const askDate = async (event, orderedMenu) => {
   return client.replyMessage(event.replyToken, {
     type: "flex",
@@ -303,7 +304,7 @@ const askDate = async (event, orderedMenu) => {
             type: "button",
             action: {
               type: "datetimepicker",
-              label: "来店希望日時を選択する",
+              label: "来店希望日を選択する",
               data: `date&${orderedMenu}`,
               mode: "date",
             },
@@ -314,14 +315,25 @@ const askDate = async (event, orderedMenu) => {
   });
 };
 
+const askTime = (event, orderedMenu, selectedDate) => {
+  console.log(event, orderedMenu, selectedDate);
+  return;
+};
+
 // 予約時
 const handlePostbackEvent = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const data = event.postback.data;
   const splitData = data.split("&");
-  if (splitData[0] !== "menu") return;
-  const orderedMenu = splitData[1];
-  askDate(event, orderedMenu);
+  if (splitData[0] === "menu") {
+    const orderedMenu = splitData[1];
+    askDate(event, orderedMenu);
+  }
+  if (splitData[0] === "date") {
+    const orderedMenu = splitData[1];
+    const selectedDate = event.postback.dare;
+    askTime(event, orderedMenu, selectedDate);
+  }
 };
 
 const lineBot = (req, res) => {
