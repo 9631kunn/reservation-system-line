@@ -267,14 +267,61 @@ const handleMessage = async (event) => {
   const text = event.message.type === "text" ? event.message.text : "";
   console.log;
   // 予約の場合メニュー表示
-  if (text === "予約") {
-    orderChoice(event);
-  }
-  // 王蟲がえし
+  if (text.contains("予約")) orderChoice(event);
+
+  // オウム返し
   return client.replyMessage(event.replyToken, {
     type: "text",
     text: displayName + "「" + text + "」",
   });
+};
+
+const askData = async (event) => {
+  return client.replyMessage(event.replyToken, {
+    type: "flex",
+    altText: "予約日選択",
+    contents: {
+      type: "bubble",
+      body: {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "text",
+            text: "来店希望日",
+            size: "md",
+            weight: "bold",
+            align: "center",
+          },
+        ],
+      },
+      footer: {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "button",
+            action: {
+              type: "datetimepicker",
+              label: "来店希望日時を選択する",
+              data: `date&${orderedMenu}`,
+              mode: "date",
+            },
+          },
+        ],
+      },
+    },
+  });
+};
+
+// 予約時
+const handlePostbackEvent = async (event) => {
+  const profile = await client.getProfile(event.source.userId);
+  const data = event.postback.data;
+  const splitData = data.split("&");
+  if (splitData[0] !== "menu") return;
+  const orderedMenu = splitData[1];
+  askData(event, orderedMenu);
 };
 
 const lineBot = (req, res) => {
@@ -290,6 +337,9 @@ const lineBot = (req, res) => {
         break;
       case "message":
         promises.push(handleMessage(event));
+        break;
+      case "postback":
+        promises.push(handlePostbackEvent(event));
         break;
     }
   }
