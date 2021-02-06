@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const line = require("@line/bot-sdk");
-const lineBot = require("./line/bot.js");
+const { lineBot } = require("./line/bot.js");
 const { Client } = require("pg");
 const PORT = process.env.PORT || 3000;
 
