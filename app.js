@@ -29,17 +29,8 @@ const greeting_follow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   // INSERT QUERY
   const table_insert = {
-    text:
-      "INSERT INTO users (line_uid,display_name,timestamp,cuttime,shampootime,colortime,spatime) VALUES($1,$2,$3,$4,$5,$6,$7);",
-    values: [
-      event.source.userId,
-      displayName,
-      event.timestamp,
-      INITIAL_TREAT[0],
-      INITIAL_TREAT[1],
-      INITIAL_TREAT[2],
-      INITIAL_TREAT[3],
-    ],
+    text: "INSERT INTO users (line_uid,display_name,timestamp,cuttime,shampootime,colortime,spatime) VALUES($1,$2,$3,$4,$5,$6,$7);",
+    values: [event.source.userId, displayName, event.timestamp, INITIAL_TREAT[0], INITIAL_TREAT[1], INITIAL_TREAT[2], INITIAL_TREAT[3]],
   };
   connection
     .query(table_insert)
@@ -271,7 +262,9 @@ const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
   // 予約の場合メニュー表示
-  if (text.includes("予約")) orderChoice(event);
+  if (text === "予約") {
+    orderChoice(event);
+  }
   // 王蟲がえし
   return client.replyMessage(event.replyToken, {
     type: "text",
@@ -300,6 +293,4 @@ const lineBot = (req, res) => {
     .catch((err) => console.log(err.stack));
 };
 
-app
-  .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
-  .listen(PORT, () => console.log("STARTED"));
+app.post("/hook", line.middleware(config), (req, res) => lineBot(req, res)).listen(PORT, () => console.log("STARTED"));
