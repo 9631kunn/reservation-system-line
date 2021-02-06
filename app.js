@@ -15,4 +15,24 @@ const connection = new Client({
 });
 connection.connect();
 
-app.post("/hook", line.middleware(config), (req, res) => lineBot(req, res)).listen(PORT, () => console.log("STARTED"));
+// LINE
+const config = {
+  channelAccessToken: process.env.ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET,
+};
+
+const menus = [
+  {
+    id: 1,
+    menu: "hoge",
+  },
+  {
+    id: 2,
+    menu: "bar",
+  },
+];
+
+app
+  .get("/api/menus", (req, res) => res.json(menus))
+  .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
+  .listen(PORT, () => console.log("STARTED"));
