@@ -25,7 +25,7 @@ const config = {
 const client = new line.Client(config);
 
 // 友達追加
-const greeting_follow = async (event) => {
+const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   // INSERT QUERY
   const table_insert = {
@@ -267,7 +267,7 @@ const handleMessage = async (event) => {
   const text = event.message.type === "text" ? event.message.text : "";
   console.log;
   // 予約の場合メニュー表示
-  if (text.contains("予約")) orderChoice(event);
+  if (text.includes("予約")) orderChoice(event);
 
   // オウム返し
   return client.replyMessage(event.replyToken, {
@@ -276,7 +276,7 @@ const handleMessage = async (event) => {
   });
 };
 
-const askData = async (event) => {
+const askDate = async (event) => {
   return client.replyMessage(event.replyToken, {
     type: "flex",
     altText: "予約日選択",
@@ -316,12 +316,12 @@ const askData = async (event) => {
 
 // 予約時
 const handlePostbackEvent = async (event) => {
-  const profile = await client.getProfile(event.source.userId);
+  const { displayName } = await client.getProfile(event.source.userId);
   const data = event.postback.data;
   const splitData = data.split("&");
   if (splitData[0] !== "menu") return;
   const orderedMenu = splitData[1];
-  askData(event, orderedMenu);
+  askDate(event, orderedMenu);
 };
 
 const lineBot = (req, res) => {
@@ -333,7 +333,7 @@ const lineBot = (req, res) => {
     console.log(event);
     switch (event.type) {
       case "follow":
-        promises.push(greeting_follow(event));
+        promises.push(greetingFollow(event));
         break;
       case "message":
         promises.push(handleMessage(event));
