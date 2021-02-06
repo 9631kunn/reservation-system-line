@@ -323,7 +323,7 @@ const handlePostbackEvent = async (event) => {
   }
 };
 
-export const lineBot = (req, res) => {
+exports.lineBot = (req, res) => {
   res.status(200).end();
   const events = req.body.events;
   const promises = [];
