@@ -276,7 +276,7 @@ const handleMessage = async (event) => {
   });
 };
 
-const askDate = async (event) => {
+const askDate = async (event, orderedMenu) => {
   return client.replyMessage(event.replyToken, {
     type: "flex",
     altText: "予約日選択",
