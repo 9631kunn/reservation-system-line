@@ -1,19 +1,34 @@
 require("dotenv").config();
+
+// EXPRESS
 const express = require("express");
 const app = express();
+
+// LINE
 const line = require("@line/bot-sdk");
 const { lineBot } = require("./line/bot.js");
+
+// DB / ORM
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const { Client } = require("pg");
+
+// PORT
 const PORT = process.env.PORT || 3000;
 
 // DB
-const connection = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-connection.connect();
+async function main() {
+  const allUsers = await prisma.user.findMany();
+  console.log(allUsers);
+}
+
+main()
+  .catch((e) => {
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
 // LINE
 const config = {
