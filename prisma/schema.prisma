@@ -12,7 +12,7 @@ generator client {
 
 model User {
   id Int @default(autoincrement()) @id
-  uid Int @unique
+  uid String @unique
   name String?
   profile Profile?
   collection Collection?
