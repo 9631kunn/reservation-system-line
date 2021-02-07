@@ -1,5 +1,11 @@
 require("dotenv").config();
+
+// LINE
 const line = require("@line/bot-sdk");
+
+// ORM
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 // CONFIG
 const INITIAL_TREAT = [20, 10, 40, 15, 30, 15, 10];
@@ -15,16 +21,13 @@ const client = new line.Client(config);
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   // INSERT QUERY
-  const table_insert = {
-    text: "INSERT INTO users (line_uid,display_name,timestamp,cuttime,shampootime,colortime,spatime) VALUES($1,$2,$3,$4,$5,$6,$7);",
-    values: [event.source.userId, displayName, event.timestamp, INITIAL_TREAT[0], INITIAL_TREAT[1], INITIAL_TREAT[2], INITIAL_TREAT[3]],
-  };
-  connection
-    .query(table_insert)
-    .then(() => {
-      console.log("insert");
-    })
-    .catch((err) => console.log(err));
+  const user = await prisma.user.create({
+    data: {
+      uid: event.source.userId,
+      name: displayName,
+    },
+  });
+  console.log(user);
 
   return client.replyMessage(event.replyToken, {
     type: "text",
