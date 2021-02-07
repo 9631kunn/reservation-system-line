@@ -36,20 +36,22 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-const menus = [
-  {
-    id: 1,
-    menu: "hoge",
-  },
-  {
-    id: 2,
-    menu: "bar",
-  },
-];
-
-const users = await prisma.user.findMany();
-
 app
+  .get("/api/seed", async (req, res) => {
+    const seedUser = {
+      uid: `seed${Math.random() * 10000}`,
+      name: "テスト太郎",
+      profile: {
+        create: {
+          bio: "テスト太郎です",
+        },
+      },
+    };
+    const result = await prisma.user.create({
+      data: seedUser,
+    });
+    res.json(result);
+  })
   .get("/api/menus", (req, res) => res.json(menus))
   .get("/api/users", (req, res) => res.json(users))
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
