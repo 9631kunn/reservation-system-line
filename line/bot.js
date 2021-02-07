@@ -27,7 +27,15 @@ const greetingFollow = async (event) => {
       name: "test",
     },
   });
+  const newUserProfile = prisma.profile.create({
+    data: {
+      bio: "test",
+      userId: newUser.id,
+    },
+  });
   console.log(newUser);
+  console.log("===========");
+  console.log(newUserProfile);
 
   return client.replyMessage(event.replyToken, {
     type: "text",
