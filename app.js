@@ -47,7 +47,10 @@ const menus = [
   },
 ];
 
+const users = await prisma.user.findMany();
+
 app
   .get("/api/menus", (req, res) => res.json(menus))
+  .get("/api/users", (req, res) => res.json(users))
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log("STARTED"));
