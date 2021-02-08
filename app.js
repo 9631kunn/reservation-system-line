@@ -33,7 +33,7 @@ app
         },
       },
     });
-    res.json(seedUser);
+    res.send("seeded");
   })
   .get("/api/users", (req, res) => res.json(users))
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
