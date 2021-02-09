@@ -11,7 +11,6 @@ const { lineBot } = require("./line/bot.js");
 // DB / ORM
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { Client } = require("pg");
 
 // PORT
 const PORT = process.env.PORT || 3000;
@@ -21,6 +20,9 @@ const config = {
   channelAccessToken: process.env.ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
+
+// JSON
+app.use(bodyParser.json());
 
 const main = async () => {
   await prisma.user.create({
