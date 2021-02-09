@@ -35,7 +35,8 @@ app
         },
       },
     });
-    res.send("seeded");
+    const user = prisma.user.findMany({});
+    res.send(user);
   })
   .get("/api/users", (req, res) => res.json(users))
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
