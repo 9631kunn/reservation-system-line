@@ -22,29 +22,19 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-// into db
-const main = async () => {
-  await prisma.user.create({
-    uid: `seed123456`,
-    name: "テスト太郎",
-    profile: {
-      create: {
-        bio: "テスト太郎です",
-      },
-    },
-  });
-};
-
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-
 app
   .get("/api/seed", async (req, res) => {
+    await prisma.user.create({
+      data: {
+        uid: `seed1234567890`,
+        name: "テスト太郎",
+        profile: {
+          create: {
+            bio: "テスト太郎です",
+          },
+        },
+      },
+    });
     res.send("seeded");
   })
   .get("/api/users", (req, res) => res.json(users))
