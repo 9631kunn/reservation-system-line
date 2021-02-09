@@ -4,6 +4,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const bodyParser = require("body-parser");
+
 // LINE
 const line = require("@line/bot-sdk");
 const { lineBot } = require("./line/bot.js");
