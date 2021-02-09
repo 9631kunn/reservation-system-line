@@ -24,25 +24,34 @@ const config = {
 // JSON
 app.use(bodyParser.json());
 
-const main = async () => {
-  await prisma.user.create({
-    data: {
-      uid: "seed1234567890",
-      name: "テスト太郎",
-    },
-  });
-};
-
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-
 app
-  .get("/api/users", (req, res) => {
+  // api
+  .get(`/api`, async (req, res) => {
+    res.json({ up: true });
+  })
+  // seed
+  .get(`/api/seed`, async (req, res) => {
+    const seedUser = {
+      uid: "2434313411111",
+      name: "Jane",
+    };
+    try {
+      await prisma.user.deleteMany({
+        where: {
+          email: "2434313411111",
+        },
+      });
+      const result = await prisma.user.create({
+        data: seedUser,
+      });
+      res.json(result);
+    } catch (e) {
+      console.error(e);
+      res.sendStatus(500);
+    }
+  })
+  // user
+  .get("/api/user", (req, res) => {
     const users = prisma.user.findMany({});
     res.json(users);
   })
