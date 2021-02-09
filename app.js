@@ -31,30 +31,8 @@ app
   .get(`/api`, async (req, res) => {
     res.json({ up: true });
   })
-  // seed
-  .get(`/api/seed`, async (req, res) => {
-    const seedUser = {
-      uid: "2434313411111",
-      name: "Jane",
-    };
-    try {
-      await prisma.user.deleteMany({
-        where: {
-          uid: "2434313411111",
-        },
-      });
-      const result = await prisma.user.create({
-        data: seedUser,
-      });
-      res.json(result);
-    } catch (e) {
-      console.error(e);
-      res.sendStatus(500);
-    }
-  })
-  // user
-  .get("/api/user", (req, res) => {
-    const users = prisma.user.findMany({});
+  .get("/api/user", async (req, res) => {
+    const users = await prisma.user.findMany({});
     res.json(users);
   })
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
