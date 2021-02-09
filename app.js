@@ -22,22 +22,32 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
-app
-  .get("/api/seed", (req, res) => {
-    prisma.user.create({
-      data: {
-        uid: `seed1234567890`,
-        name: "テスト太郎",
-        profile: {
-          create: {
-            bio: "テスト太郎です",
-          },
+const main = async () => {
+  await prisma.user.create({
+    data: {
+      uid: `seed1234567890`,
+      name: "テスト太郎",
+      profile: {
+        create: {
+          bio: "テスト太郎です",
         },
       },
-    });
-    const user = prisma.user.findMany({});
-    res.send(user);
+    },
+  });
+};
+
+main()
+  .catch((e) => {
+    throw e;
   })
-  .get("/api/users", (req, res) => res.json(users))
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+app
+  .get("/api/users", async (req, res) => {
+    const users = await prisma.user.findMany({});
+    res.json(users);
+  })
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log("STARTED"));
