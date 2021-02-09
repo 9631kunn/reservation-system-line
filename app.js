@@ -25,13 +25,8 @@ const config = {
 const main = async () => {
   await prisma.user.create({
     data: {
-      uid: `seed1234567890`,
+      uid: "seed1234567890",
       name: "テスト太郎",
-      profile: {
-        create: {
-          bio: "テスト太郎です",
-        },
-      },
     },
   });
 };
