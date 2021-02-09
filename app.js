@@ -40,8 +40,8 @@ main()
   });
 
 app
-  .get("/api/users", async (req, res) => {
-    const users = await prisma.user.findMany({});
+  .get("/api/users", (req, res) => {
+    const users = prisma.user.findMany({});
     res.json(users);
   })
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
