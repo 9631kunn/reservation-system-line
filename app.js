@@ -40,7 +40,7 @@ app
     try {
       await prisma.user.deleteMany({
         where: {
-          email: "2434313411111",
+          uid: "2434313411111",
         },
       });
       const result = await prisma.user.create({
