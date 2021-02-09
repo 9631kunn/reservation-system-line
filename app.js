@@ -23,8 +23,8 @@ const config = {
 };
 
 app
-  .get("/api/seed", async (req, res) => {
-    await prisma.user.create({
+  .get("/api/seed", (req, res) => {
+    prisma.user.create({
       data: {
         uid: `seed1234567890`,
         name: "テスト太郎",
