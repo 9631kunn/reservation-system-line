@@ -20,20 +20,14 @@ const client = new line.Client(config);
 // 友達追加
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
-  const newUser = {
-    uid: event.source.userId,
-    name: displayName,
-  };
 
   // INSERT QUERY
-  try {
-    const result = await prisma.user.create({
-      data: newUser,
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
+  const newUser = await prisma.user.create({
+    data: {
+      uid: event.source.userId.toString(),
+      name: displayName,
+    },
+  });
   // Reply
   return client.replyMessage(event.replyToken, {
     type: "text",
