@@ -22,12 +22,17 @@ const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
 
   // INSERT QUERY
-  const newUser = await prisma.user.create({
-    data: {
-      uid: event.source.userId,
-      name: displayName,
-    },
-  });
+  const newUser = {
+    uid: event.source.userId,
+    name: displayName,
+  };
+  try {
+    await prisma.user.create({
+      data: newUser,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   // Reply
   return client.replyMessage(event.replyToken, {
