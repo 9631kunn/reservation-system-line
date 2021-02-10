@@ -10,7 +10,7 @@ const config = {
 const client = new line.Client(config);
 
 exports.setProfile = (event) => {
-  return client.replayMessage(event.replyToken, {
+  return client.replyMessage(event.replyToken, {
     type: "text",
     text: "プロフィール文を入力してください\uDBC0\uDC79",
   });
