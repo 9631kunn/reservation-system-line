@@ -24,7 +24,7 @@ const config = {
 };
 
 // JSON
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 app
   // api
