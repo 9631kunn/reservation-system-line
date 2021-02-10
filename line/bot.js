@@ -23,16 +23,10 @@ const greetingFollow = async (event) => {
   // INSERT QUERY
   const newUser = prisma.user.create({
     data: {
-      uid: "hjkf3e43huiedej",
-      name: "test",
-      profile: {
-        create: {
-          bio: "TESTです",
-        },
-      },
+      uid: event.source.userId,
+      name: displayName,
     },
   });
-
   return client.replyMessage(event.replyToken, {
     type: "text",
     text: displayName + "さん、フォローありがとうございます\uDBC0\uDC04",
