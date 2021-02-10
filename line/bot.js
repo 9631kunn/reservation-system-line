@@ -17,6 +17,9 @@ const config = {
 };
 const client = new line.Client(config);
 
+// functions
+const { setProfile } = require("./functions/setProfile");
+
 // 友達追加
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
@@ -261,8 +264,9 @@ const orderChoice = (event) => {
 const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
-  // 予約の場合メニュー表示
-  if (text.includes("予約")) orderChoice(event);
+
+  // プロフィール設定
+  if (text === "プロフィール") setProfile(event);
 
   // オウム返し
   return client.replyMessage(event.replyToken, {
