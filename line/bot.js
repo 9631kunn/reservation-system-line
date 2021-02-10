@@ -22,20 +22,12 @@ const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
 
   // INSERT QUERY
-  const isExists = await prisma.user.findUnique({
-    where: {
+  const newUser = await prisma.user.create({
+    data: {
       uid: event.source.userId,
+      name: displayName,
     },
   });
-  console.log("This uid is...", isExists);
-  if (!isExists) {
-    const newUser = await prisma.user.create({
-      data: {
-        uid: event.source.userId,
-        name: displayName,
-      },
-    });
-  }
 
   // Reply
   return client.replyMessage(event.replyToken, {
