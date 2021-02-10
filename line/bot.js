@@ -24,7 +24,7 @@ const greetingFollow = async (event) => {
   // INSERT QUERY
   const newUser = await prisma.user.create({
     data: {
-      uid: "teteteteddf",
+      uid: event.source.userId,
       name: displayName,
     },
   });
