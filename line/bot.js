@@ -21,7 +21,7 @@ const client = new line.Client(config);
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   // INSERT QUERY
-  const newUser = prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       uid: event.source.userId,
       name: displayName,
