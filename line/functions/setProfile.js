@@ -8,6 +8,13 @@ const config = {
 };
 const client = new line.Client(config);
 
+exports.testFunc = (event) => {
+  return client.replyMessage(event.replyToken, {
+    type: "text",
+    text: "TEST\uDBC0\uDC79",
+  });
+};
+
 exports.setProfile = (event) => {
   return client.replyMessage(event.replyToken, {
     type: "text",
