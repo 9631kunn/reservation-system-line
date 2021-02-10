@@ -24,12 +24,12 @@ const greetingFollow = async (event) => {
   console.log(event.source.userId.toString(), "===", typeof event.source.userId);
 
   // INSERT QUERY
-  // const newUser = await prisma.user.create({
-  //   data: {
-  //     uid: "teteteteddf",
-  //     name: displayName,
-  //   },
-  // });
+  const newUser = await prisma.user.create({
+    data: {
+      uid: "teteteteddf",
+      name: displayName,
+    },
+  });
 
   // Reply
   return client.replyMessage(event.replyToken, {
@@ -258,7 +258,6 @@ const orderChoice = (event) => {
 const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
-  console.log;
   // 予約の場合メニュー表示
   if (text.includes("予約")) orderChoice(event);
 
