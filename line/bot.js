@@ -16,7 +16,7 @@ const config = {
 const client = new line.Client(config);
 
 // functions
-const { setProfile } = require("./functions/setProfile");
+// const { setProfile } = require("./functions/setProfile");
 
 // 友達追加
 const greetingFollow = async (event) => {
@@ -255,6 +255,13 @@ const orderChoice = (event) => {
         },
       },
     },
+  });
+};
+
+const setProfile = (event) => {
+  return client.replyMessage(event.replyToken, {
+    type: "text",
+    text: "プロフィール文を入力してください\uDBC0\uDC79",
   });
 };
 
