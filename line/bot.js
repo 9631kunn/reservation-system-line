@@ -1,8 +1,5 @@
 require("dotenv").config();
 
-// LINE
-const line = require("@line/bot-sdk");
-
 // ORM
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -11,6 +8,7 @@ const prisma = new PrismaClient();
 const INITIAL_TREAT = [20, 10, 40, 15, 30, 15, 10];
 
 // LINE
+const line = require("@line/bot-sdk");
 const config = {
   channelAccessToken: process.env.ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
