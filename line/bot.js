@@ -255,18 +255,13 @@ const orderChoice = (event) => {
   });
 };
 
-const testFunc = (event) => {
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: "TEST\uDBC0\uDC79",
-  });
-};
-
 const setProfile = (event) => {
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: "プロフィール文を入力してください\uDBC0\uDC79",
-  });
+  return client
+    .replyMessage(event.replyToken, {
+      type: "text",
+      text: "プロフィール文を入力してください\uDBC0\uDC79",
+    })
+    .catch((err) => console.log(err.message));
 };
 
 // メッセージ送信時
@@ -276,13 +271,14 @@ const handleMessage = async (event) => {
 
   // プロフィール設定
   if (text === "プロフィール") setProfile(event);
-  if (text === "test") testFunc(event);
 
   // オウム返し
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: displayName + "「" + text + "」",
-  });
+  return client
+    .replyMessage(event.replyToken, {
+      type: "text",
+      text: displayName + "「" + text + "」",
+    })
+    .catch((err) => console.log(err.message));
 };
 
 // 希望日時選択
