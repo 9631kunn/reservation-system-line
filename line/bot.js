@@ -255,22 +255,20 @@ const orderChoice = (event) => {
   });
 };
 
-const setProfile = (event) => {
-  return client
-    .replyMessage(event.replyToken, {
-      type: "text",
-      text: "プロフィール文を入力してください\uDBC0\uDC79",
-    })
-    .catch((err) => console.log(err.message));
-};
-
 // メッセージ送信時
 const handleMessage = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
   const text = event.message.type === "text" ? event.message.text : "";
 
   // プロフィール設定
-  if (text === "プロフィール") setProfile(event);
+  if (text === "プロフィール") {
+    return client
+      .replyMessage(event.replyToken, {
+        type: "text",
+        text: "プロフィール文を入力してください\uDBC0\uDC79",
+      })
+      .catch((err) => console.log(err.message));
+  }
 
   // オウム返し
   return client
