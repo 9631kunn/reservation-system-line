@@ -9,6 +9,7 @@ const INITIAL_TREAT = [20, 10, 40, 15, 30, 15, 10];
 
 // LINE
 const line = require("@line/bot-sdk");
+const { response } = require("express");
 const config = {
   channelAccessToken: process.env.ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
@@ -351,7 +352,7 @@ exports.lineBot = (req, res) => {
         promises.push(greetingFollow(event));
         break;
       case "message":
-        promises.push(handleMessage(event));
+        promises.push(handleMessage(event)).then((response) => console.log(response));
         break;
       case "postback":
         promises.push(handlePostbackEvent(event));
