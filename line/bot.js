@@ -20,10 +20,22 @@ const client = new line.Client(config);
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
 
-  // INSERT QUERY
+  // 文字列生成 & 重複ないか調べる
+  let uid = Math.floor(strong * Math.random()).toString(16);
+  const isExist = await prisma.user.findUnique({
+    where: {
+      uid: uid,
+    },
+  });
+  while (isExist) {
+    uid = Math.floor(strong * Math.random()).toString(16);
+  }
+
+  // DBに格納
   const newUser = {
-    uid: event.source.userId,
-    name: displayName,
+    uid: uid,
+    lineUid: event.source.userId,
+    name: "たまご",
   };
   try {
     await prisma.user.create({
