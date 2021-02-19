@@ -35,5 +35,13 @@ app
     const users = await prisma.user.findMany({});
     res.json(users);
   })
+  .get("/api/user/:userId", async (req, res) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        uid: req.params.userId,
+      },
+    });
+    res.json(users);
+  })
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log("STARTED"));
