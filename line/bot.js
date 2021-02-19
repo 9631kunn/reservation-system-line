@@ -20,8 +20,8 @@ const client = new line.Client(config);
 const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
 
-  // 文字列生成 & 重複ないか調べる
-  const uniqueStr = Date.now().toString(16) + Math.floor(strong * Math.random()).toString(16);
+  // 一意の文字列生成
+  const uniqueStr = Date.now().toString(16) + Math.floor(1000 * Math.random()).toString(16);
 
   // DBに格納
   const newUser = {
