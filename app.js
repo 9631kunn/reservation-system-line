@@ -41,7 +41,7 @@ app
         uid: req.params.userId,
       },
     });
-    res.json(users);
+    res.json(user);
   })
   .post("/hook", line.middleware(config), (req, res) => lineBot(req, res))
   .listen(PORT, () => console.log("STARTED"));
