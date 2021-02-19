@@ -21,19 +21,11 @@ const greetingFollow = async (event) => {
   const { displayName } = await client.getProfile(event.source.userId);
 
   // 文字列生成 & 重複ないか調べる
-  let uid = Math.floor(strong * Math.random()).toString(16);
-  const isExist = await prisma.user.findUnique({
-    where: {
-      uid: uid,
-    },
-  });
-  while (isExist) {
-    uid = Math.floor(strong * Math.random()).toString(16);
-  }
+  const uniqueStr = Date.now().toString(16) + Math.floor(strong * Math.random()).toString(16);
 
   // DBに格納
   const newUser = {
-    uid: uid,
+    uid: uniqueStr,
     lineUid: event.source.userId,
     name: "たまご",
   };
