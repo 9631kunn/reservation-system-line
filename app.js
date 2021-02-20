@@ -4,7 +4,12 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
-const bodyParser = require("body-parser");
+// CROS
+const cors = require("cors");
+const corsOptions = {
+  origin: "https://liff-beryl.vercel.app",
+  optionsSuccessStatus: 200,
+};
 
 // LINE
 const line = require("@line/bot-sdk");
@@ -31,11 +36,11 @@ app
   .get(`/api`, async (req, res) => {
     res.json({ up: true });
   })
-  .get("/api/user", async (req, res) => {
+  .get("/api/user", cors(corsOptions), async (req, res) => {
     const users = await prisma.user.findMany({});
     res.json(users);
   })
-  .get("/api/user/:lineUserId", async (req, res) => {
+  .get("/api/user/:lineUserId", cors(corsOptions), async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
         lineUid: req.params.lineUserId,
