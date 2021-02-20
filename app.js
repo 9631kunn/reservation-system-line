@@ -35,10 +35,10 @@ app
     const users = await prisma.user.findMany({});
     res.json(users);
   })
-  .get("/api/user/:userId", async (req, res) => {
+  .get("/api/user/:lineUserId", async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
-        uid: req.params.userId,
+        lineUid: req.params.lineUserId,
       },
     });
     res.json(user);
