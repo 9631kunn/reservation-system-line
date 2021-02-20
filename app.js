@@ -6,10 +6,13 @@ const app = express();
 
 // CROS
 const cors = require("cors");
-const corsOptions = {
-  origin: "https://liff-beryl.vercel.app",
-  optionsSuccessStatus: 200,
-};
+app.use(
+  cors({
+    origin: "https://liff-beryl.vercel.app", //アクセス許可するオリジン
+    credentials: true, //レスポンスヘッダーにAccess-Control-Allow-Credentials追加
+    optionsSuccessStatus: 200, //レスポンスstatusを200に設定
+  })
+);
 
 // LINE
 const line = require("@line/bot-sdk");
@@ -36,11 +39,11 @@ app
   .get(`/api`, async (req, res) => {
     res.json({ up: true });
   })
-  .get("/api/user", cors(corsOptions), async (req, res) => {
+  .get("/api/user", async (req, res) => {
     const users = await prisma.user.findMany({});
     res.json(users);
   })
-  .get("/api/user/:lineUserId", cors(corsOptions), async (req, res) => {
+  .get("/api/user/:lineUserId", async (req, res) => {
     const user = await prisma.user.findUnique({
       where: {
         lineUid: req.params.lineUserId,
